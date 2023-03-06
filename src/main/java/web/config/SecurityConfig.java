@@ -17,8 +17,11 @@ import web.config.handler.LoginSuccessHandler;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserDetailsService userDetailsService; // сервис, с помощью которого тащим пользователя
+    private final UserDetailsService userDetailsService;
+    // сервис, с помощью которого тащим пользователя
 
+    @Autowired
+    private LoginSuccessHandler successHandler;
     public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
@@ -28,13 +31,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()); // конфигурация для прохождения аутентификации
     }
-
-/*
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("ADMIN").password("ADMIN").roles("ADMIN");
-    }
-*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -67,7 +63,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //страницы аутентификаци доступна всем
                 .antMatchers("/login").anonymous()
                 // защищенные URL
-                .antMatchers("/hello").access("hasAnyRole('ADMIN')").anyRequest().authenticated();
+                .antMatchers("/user**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/admin").hasRole("ADMIN")
+                .and().formLogin().successHandler(successHandler);
+
     }
 
     @Bean

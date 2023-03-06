@@ -8,7 +8,8 @@ import web.dao.UserDao;
 import web.model.Role;
 import web.model.User;
 
-import java.util.Set;
+import javax.annotation.PostConstruct;
+import java.util.Collections;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -20,14 +21,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // «Пользователь» – это просто Object. В большинстве случаев он может быть
     //  приведен к классу UserDetails.
     // Для создания UserDetails используется интерфейс UserDetailsService, с единственным методом:
-
-    public void addUser(User user){
-        Role role1 = new Role(11L, "ROLE_USER");
-        User user1 = new User(1L, "user", "1234", (Set<Role>) role1);
-        Role role2 = new Role(12L, "ROLE_ADMIN");
-        User user2 = new User(2L, "admin", "qwerty", (Set<Role>) role2);
+    @PostConstruct
+    public void addUser(){
+        Role role1 = new Role("ROLE_USER");
+        Role role2 = new Role("ROLE_ADMIN");
+        User user1 = new User("user", "1234", Collections.singleton(role1));
+        User admin = new User("admin", "qwerty", Collections.singleton(role2));
         userDao.add(user1);
-        userDao.add(user2);
+        userDao.add(admin);
     }
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

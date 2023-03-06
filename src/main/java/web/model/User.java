@@ -9,26 +9,34 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Entity
-@Table(name = "t_user")
+@Table(name = "users")
 public class User implements UserDetails, Serializable {
-    @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
-    private String name; // уникальное значение
-    @NonNull
-    private String password;
-    @NonNull
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn (name="roles_id")
-    private Set<Role> roles;
 
+    @Column
+    private String name; // уникальное значение
+
+    @Column
+    private String password;
+
+    @ManyToMany (cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    public User(String name, String password, Set<Role> roles){
+        this.name = name;
+        this.password = password;
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

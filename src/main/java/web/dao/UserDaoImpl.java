@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import web.model.Role;
 import web.model.User;
 
@@ -30,6 +31,7 @@ public class UserDaoImpl implements UserDao {
         this.hibernateTemplate = new HibernateTemplate(sessionFactory);
     }
     @Override
+    @Transactional
     public void add(User user) {
         hibernateTemplate.save(user);
     }

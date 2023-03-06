@@ -2,25 +2,32 @@ package web.model;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@RequiredArgsConstructor
+
 @NoArgsConstructor
 @Entity
-@Table(name = "t_role")
+@Table(name = "roles")
 public class Role implements GrantedAuthority, Serializable {
-    @NonNull
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
+
+    @Column
     private String role;
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
+    public Role(String role){
+        this.role=role;
+    }
     public Long getId() {
         return id;
     }
