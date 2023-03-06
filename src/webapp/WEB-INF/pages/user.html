@@ -4,18 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <title>Home Page</title>
+  <style>
+    body {background-color: green;}
+    h1   {color: white;
+      font-family: verdana;
+      font-size: 500%;
+      text-align: center;}
+    form    {color: red;
+      font-family: courier;
+      font-size: 300%;
+      text-align: center;}
+  </style>
 </head>
 <body>
-<h2>Welcome</h2>
-<p>Spring Security Thymeleaf tutorial</p>
-<div sec:authorize="hasRole('USER')">Text visible to user.</div>
-<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
-<div sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>
-Authenticated username:
-<div sec:authentication="principal.getUsername()"></div>
-Authenticated user's password:
-<div sec:authentication="principal.password"></div>
-Authenticated user roles:
-<div sec:authentication="principal.authorities"></div>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<form th:action="@{/logout}" method="post">
+  <input type="submit" value="Logout"/>
+</form>
 </body>
 </html>

@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import web.model.Role;
 import web.model.User;
@@ -54,5 +55,12 @@ public class UserDaoImpl implements UserDao {
         });
         return !users.isEmpty() ? users.get(0) : null;
     }
+
+    @Override
+    @Transactional(readOnly=false)
+    public void delete(User user) {
+        hibernateTemplate.delete(user);
+    }
+
 }
 

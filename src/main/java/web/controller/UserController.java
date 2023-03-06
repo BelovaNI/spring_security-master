@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import web.model.User;
@@ -32,12 +34,22 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
-	public String getUserPage() {
+	public String getUserPage(ModelMap modelMap) {
+		List<User> user= userDetailsService.listUsers();
+		modelMap.addAttribute("user", user);
 		return "user";
 	}
 
 	@GetMapping(value = "/admin")
-	public String getAdminPage() {
+	public String getAdminPage(ModelMap modelMap) {
+		List<User> list= userDetailsService.listUsers();
+		modelMap.addAttribute("list", list);
 		return "admin";
+	}
+	@GetMapping("/delete/{name}")
+	public String deleteUser(@PathVariable("name") String name, Model model) {
+		User user = userDetailsService.getUserByName(name);
+		userDetailsService.delete(user);
+		return "redirect:/admin";
 	}
 }

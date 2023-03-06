@@ -1,11 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Adminka</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Admin's page</title>
+    <style>
+        body {background-color: blue;}
+        h3   {color: yellowgreen;
+            font-family: verdana;
+            font-size: 500%;
+            text-align: center;}
+        th    {color: red;
+            font-family: courier;
+            font-size: 300%;}
+        td    {color: yellow;
+            font-family: courier;
+            font-size: 200%}
+        a   {color: yellowgreen;
+            font-size: 150%;}
+        .table_center_by_css {
+            width: 300px;
+            border: 1px solid #000;
+            margin: auto;
+        }
+    </style>
 </head>
 <a href="/user">Go to homepage</a>
+<a th:href="@{/logout}">Logout</a>
 <body>
-
+<h3>Welcome, master!</h3>
+<hr>
+<table>
+    <table class="table_center_by_css">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Password</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user:${list}">
+            <td th:text="${user.id}"/>
+            <td th:text="${user.getUsername()}"/>
+            <td th:text="${user.password}"/>
+            <td> <a th:href="@{/delete/{name}(name=${user.getUsername()})}">Delete</a></td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>

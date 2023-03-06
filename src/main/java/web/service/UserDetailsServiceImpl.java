@@ -10,8 +10,8 @@ import web.model.User;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -39,5 +39,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         return userDetails;
+    }
+    public List<User> listUsers(){
+        return userDao.listUsers();
+    }
+
+    public void delete(User user){
+        userDao.delete(user);
+    }
+
+    public User getUserByName(String name) {
+        return userDao.getUserByName(name);
     }
 }
