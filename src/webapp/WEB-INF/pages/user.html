@@ -1,14 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>Home Page</title>
 </head>
 <body>
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<h1 th:inline="text">Hello [[${#httpServletRequest.cookies}]]!</h1>
-<form th:action="@{/logout}" method="post">
-  <input type="submit" value="Sign Out"/>
-</form>
+<h2>Welcome</h2>
+<p>Spring Security Thymeleaf tutorial</p>
+<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+<div sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>
+Authenticated username:
+<div sec:authentication="principal.getUsername()"></div>
+Authenticated user's password:
+<div sec:authentication="principal.password"></div>
+Authenticated user roles:
+<div sec:authentication="principal.authorities"></div>
 </body>
 </html>

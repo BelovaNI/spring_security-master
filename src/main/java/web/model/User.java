@@ -94,4 +94,8 @@ public class User implements UserDetails, Serializable {
                 ", roles=" + roles +
                 '}';
     }
+
+    public Long getId() {
+        return id;
+    }
 }

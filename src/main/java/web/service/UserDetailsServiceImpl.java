@@ -10,6 +10,8 @@ import web.model.User;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -23,15 +25,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // Для создания UserDetails используется интерфейс UserDetailsService, с единственным методом:
     @PostConstruct
     public void addUser(){
-        Role role1 = new Role("ROLE_USER");
-        Role role2 = new Role("ROLE_ADMIN");
+        Role role1 = new Role("USER");
+        Role role2 = new Role("ADMIN");
         User user1 = new User("user", "1234", Collections.singleton(role1));
         User admin = new User("admin", "qwerty", Collections.singleton(role2));
-        userDao.add(user1);
+        userDao.add( user1);
         userDao.add(admin);
     }
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userDao.getUserByName(s);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserDetails userDetails = userDao.getUserByName(username);
+        if (userDetails == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return userDetails;
     }
 }
