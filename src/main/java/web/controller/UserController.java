@@ -20,7 +20,7 @@ import java.util.Optional;
 public class UserController {
 	private UserDetailsServiceImpl userDetailsService;
 	private Optional<String> optionalUser;
-    @Autowired
+	@Autowired
 	public UserController(UserDetailsServiceImpl userDetailsService) {
 		this.userDetailsService = userDetailsService;
 	}

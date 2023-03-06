@@ -25,8 +25,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // Для создания UserDetails используется интерфейс UserDetailsService, с единственным методом:
     @PostConstruct
     public void addUser(){
-        Role role1 = new Role("USER");
-        Role role2 = new Role("ADMIN");
+        Role role1 = new Role("ROLE_USER");
+        Role role2 = new Role("ROLE_ADMIN");
         User user1 = new User("user", "1234", Collections.singleton(role1));
         User admin = new User("admin", "qwerty", Collections.singleton(role2));
         userDao.add( user1);
